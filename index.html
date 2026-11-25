@@ -1287,7 +1287,7 @@ const recvInc=()=>recvList().reduce((s,[k,r])=>s+(+r.a||0),0);
 const cashAcc=()=>st.acc.filter(a=>a.type!=='card'&&a.id!=st.backup&&a.type!=='savings'&&!a.ex),cashPos=()=>cashAcc().reduce((s,a)=>s+Math.max(0,a.bal||0),0);
 const heldTot=()=>Math.min(cashPos(),(st.held||[]).filter(h=>!h.done).reduce((q,h)=>q+(+h.a||0),0));
 const cash=()=>Math.max(0,cashPos()+recvInc()-heldTot());
-const asideTot=()=>Math.min(Math.max(0,cashPos()-heldTot()-asideTot()),(st.aside||[]).reduce((q,z)=>q+(+z.a||0),0));
+const asideTot=()=>Math.min(Math.max(0,cashPos()-heldTot()),(st.aside||[]).reduce((q,z)=>q+(+z.a||0),0));
 const cards=()=>st.acc.filter(a=>a.type==='card'&&!a.ex),cardRoom=()=>cards().reduce((s,a)=>s+Math.max(0,a.limit-a.bal),0);
 const room=p=>Math.max(0,p.limit-p.owed);
 const bnplRoom=oth=>st.bnpl.filter(p=>!p.ex).reduce((s,p)=>{const rp=(oth||[]).filter(o=>o.kind==='bnpl'&&o.id==p.id).reduce((a,o)=>a+(+o.a||0),0);return s+room(p)+Math.min(Math.max(0,+p.owed||0),rp)},0);
